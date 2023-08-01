@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:great_places/providers/great_places.dart';
 import 'package:great_places/widgets/image_input.dart';
 import 'package:great_places/widgets/location_input.dart';
@@ -15,19 +16,34 @@ class PlaceFormScreen extends StatefulWidget {
 class _PlaceFormScreenState extends State<PlaceFormScreen> {
   final _titleController = TextEditingController();
   File? _pickedImage;
+  LatLng? _pickedPosition;
 
   void _selectImage(File pickedImage) {
+    setState(() {
     _pickedImage = pickedImage;
+    });
+  }
+
+  void _selectPosition(LatLng position) {
+    setState(() {
+    _pickedPosition = position;  
+    });
+  }
+
+  bool _isFormValid() {
+    return _titleController.text.isNotEmpty && 
+    _pickedImage != null && 
+    _pickedPosition != null; //todos os campos do form são != null
   }
 
   void _submitForm() {
-    if (_titleController.text.isEmpty || _pickedImage == null) {
-      return;
-    }
+    if (!_isFormValid()) return; //só continua se o form for válido
+    
 
     Provider.of<GreatPlaces>(context, listen: false).addPlace(
       _titleController.text,
       _pickedImage!,
+      _pickedPosition!,
     );
 
     Navigator.of(context).pop(); //return to previous screen (stack)
@@ -59,7 +75,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                       const SizedBox(height: 10),
                       ImageInput(_selectImage),
                       const SizedBox(height: 10),
-                      const LocationInput(),
+                      LocationInput(_selectPosition),
                     ],
                   ),
                 ),
@@ -68,7 +84,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
             Padding(
               padding: const EdgeInsets.all(5),
               child: ElevatedButton.icon(
-                onPressed: _submitForm,
+                onPressed: _isFormValid() ? _submitForm : null, //desabilita o botao se tiver campo null 
                 icon: const Icon(Icons.add),
                 label: const Text('Add'),
                 style: ElevatedButton.styleFrom(

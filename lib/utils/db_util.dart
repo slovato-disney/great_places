@@ -11,7 +11,7 @@ class DbUtil {
           'places.db'), //caminho completo: diretorio e nome no banco de dados
       onCreate: (db, version) { //cria a tabela
         return db.execute(
-            'CREATE TABLE places (id TEXT PRIMARY KEY, title TEXT, image TEXT)' //path da imagem
+            'CREATE TABLE places (id TEXT PRIMARY KEY, title TEXT, image TEXT, latitude REAL, longitude REAL, address TEXT)' //path da imagem e endereco
             );
       },
       version: 1,
