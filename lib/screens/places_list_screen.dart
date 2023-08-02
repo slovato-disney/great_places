@@ -46,7 +46,12 @@ class PlacesListScreen extends StatelessWidget {
                           color: Colors.grey,
                         ),
                         ),
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.of(context).pushNamed(
+                          AppRoutes.PLACE_DETAILS, 
+                          arguments: greatPlaces.itemByIndex(i), //pego o elemento a partir do índice dele na list (com esse param consigo ver os argumentos que passo)
+                        );
+                      },
                     ),
                   ),
           ),

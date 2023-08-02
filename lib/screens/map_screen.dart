@@ -55,12 +55,12 @@ void _selectPosition(LatLng position) {
           zoom: 13,
         ),
         onTap: widget.isReadOnly ? null : _selectPosition,
-        markers: _pickedPosition == null
+        markers: (_pickedPosition == null && !widget.isReadOnly) //mostra o marcador se for readOnly
             ? {}
             : {
                 Marker(
                   markerId: const MarkerId('p1'), //seleciona só um marcador
-                  position: _pickedPosition!,
+                  position: _pickedPosition ?? widget.initialLocation.toLatLng(), //transforma em lat lgn (add na classe o metodo)
                 )
               },
       ),

@@ -71,6 +71,9 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                         decoration: const InputDecoration(
                           labelText: 'Title',
                         ),
+                        onChanged: (text) {
+                          setState(() {}); //pra inserir os dados no form independente da ordem
+                        },
                       ),
                       const SizedBox(height: 10),
                       ImageInput(_selectImage),
